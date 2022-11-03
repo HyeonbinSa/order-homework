@@ -6,7 +6,7 @@ import kr.co._29cm.homework.domain.Order;
 
 public class OrderDao {
 
-    private static Map<Long, Order> IN_MEMORY_ORDER = new HashMap<>();
+    private static final Map<Long, Order> IN_MEMORY_ORDER = new HashMap<>();
     private static Long id = 1L;
 
     public Long save(Order order) {

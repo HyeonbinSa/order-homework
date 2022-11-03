@@ -14,6 +14,10 @@ public class OrderProduct {
         this.quantity = quantity;
     }
 
+    public OrderProduct(Long orderId, Long productId, int quantity) {
+        this(null, orderId, productId, quantity);
+    }
+
     public OrderProduct(Long productId, int quantity) {
         this(null, null, productId, quantity);
     }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import kr.co._29cm.homework.dao.OrderDao;
+import kr.co._29cm.homework.dao.OrderProductDao;
 import kr.co._29cm.homework.dao.ProductDao;
 import kr.co._29cm.homework.domain.Order;
 import kr.co._29cm.homework.domain.OrderProduct;
@@ -13,10 +14,12 @@ public class OrderService {
 
     private final ProductDao productDao;
     private final OrderDao orderDao;
+    private final OrderProductDao orderProductDao;
 
-    public OrderService(ProductDao productDao, OrderDao orderDao) {
+    public OrderService(ProductDao productDao, OrderDao orderDao, OrderProductDao orderProductDao) {
         this.productDao = productDao;
         this.orderDao = orderDao;
+        this.orderProductDao = orderProductDao;
     }
 
     public void order(Map<Long, Integer> orderRequests) {
@@ -35,5 +38,10 @@ public class OrderService {
         }
         Order order = new Order(sum, deliveryFare);
         Long orderId = orderDao.save(order);
+        for (OrderProduct orderProduct : orderProducts) {
+            OrderProduct newOrderProduct = new OrderProduct(orderId, orderProduct.getProductId(),
+                    orderProduct.getQuantity());
+            orderProductDao.save(newOrderProduct);
+        }
     }
 }
