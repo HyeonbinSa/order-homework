@@ -3,12 +3,15 @@ package kr.co._29cm.homework.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import kr.co._29cm.homework.dao.OrderDao;
 import kr.co._29cm.homework.dao.OrderProductDao;
 import kr.co._29cm.homework.dao.ProductDao;
 import kr.co._29cm.homework.domain.Order;
 import kr.co._29cm.homework.domain.OrderProduct;
 import kr.co._29cm.homework.domain.Product;
+import kr.co._29cm.homework.dto.OrderProductResponse;
+import kr.co._29cm.homework.dto.OrderResponse;
 
 public class OrderService {
 
@@ -16,13 +19,13 @@ public class OrderService {
     private final OrderDao orderDao;
     private final OrderProductDao orderProductDao;
 
-    public OrderService(ProductDao productDao, OrderDao orderDao, OrderProductDao orderProductDao) {
-        this.productDao = productDao;
-        this.orderDao = orderDao;
-        this.orderProductDao = orderProductDao;
+    public OrderService() {
+        this.productDao = new ProductDao();
+        this.orderDao = new OrderDao();
+        this.orderProductDao = new OrderProductDao();
     }
 
-    public void order(Map<Long, Integer> orderRequests) {
+    public Long create(Map<Long, Integer> orderRequests) {
         int sum = 0;
         List<OrderProduct> orderProducts = new ArrayList<>();
         for (Long productId : orderRequests.keySet()) {
@@ -43,5 +46,17 @@ public class OrderService {
                     orderProduct.getQuantity());
             orderProductDao.save(newOrderProduct);
         }
+        return orderId;
+    }
+
+    public OrderResponse find(Long orderId) {
+        Order order = orderDao.findById(orderId);
+        List<OrderProduct> orderProducts = orderProductDao.findByOrderId(orderId);
+        List<OrderProductResponse> orderProductResponses = orderProducts.stream()
+                .map(orderProduct -> new OrderProductResponse(
+                        productDao.findById(orderProduct.getProductId()).getName(),
+                        orderProduct.getQuantity()))
+                .collect(Collectors.toList());
+        return OrderResponse.of(order, orderProductResponses);
     }
 }

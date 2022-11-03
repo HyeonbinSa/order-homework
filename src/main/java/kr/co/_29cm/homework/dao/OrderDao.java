@@ -14,4 +14,8 @@ public class OrderDao {
         IN_MEMORY_ORDER.put(newOrder.getId(), newOrder);
         return newOrder.getId();
     }
+
+    public Order findById(Long orderId) {
+        return IN_MEMORY_ORDER.get(orderId);
+    }
 }
