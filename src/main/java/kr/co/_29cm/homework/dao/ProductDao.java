@@ -8,10 +8,9 @@ import kr.co._29cm.homework.domain.Product;
 
 public class ProductDao {
 
-    private final Map<Long, Product> products;
+    private static final Map<Long, Product> products = new LinkedHashMap<>();
 
     public ProductDao() {
-        this.products = new LinkedHashMap<>();
     }
 
     public Long save(Product product) {

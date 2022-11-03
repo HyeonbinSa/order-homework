@@ -4,13 +4,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import kr.co._29cm.homework.domain.Product;
+import kr.co._29cm.homework.dto.OrderResponse;
+import kr.co._29cm.homework.service.OrderService;
 import kr.co._29cm.homework.service.ProductService;
 import kr.co._29cm.homework.view.InputView;
 import kr.co._29cm.homework.view.OutputView;
 
 public class OrderController {
-    public static final String EMPTY = "";
+
     final ProductService productService = new ProductService();
+    final OrderService orderService = new OrderService();
 
     public void run() {
         if (!inputCommand()) {
@@ -20,8 +23,10 @@ public class OrderController {
         productService.init();
         List<Product> products = productService.findAll();
         OutputView.printProducts(products);
-        // 주문 시작
         Map<Long, Integer> orderRequests = generateOrderRequest();
+        Long orderId = orderService.create(orderRequests);
+        OrderResponse orderResponse = orderService.find(orderId);
+        OutputView.printOrderInformation(orderResponse);
     }
 
     private Map<Long, Integer> generateOrderRequest() {
@@ -36,7 +41,7 @@ public class OrderController {
                 orderRequests.put(productId, orderRequests.get(productId) + stock);
                 continue;
             }
-            orderRequests.put(productId, 0);
+            orderRequests.put(productId, stock);
         }
     }
 
