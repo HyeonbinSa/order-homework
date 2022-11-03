@@ -1,16 +1,20 @@
 package kr.co._29cm.homework.dao;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 import kr.co._29cm.homework.domain.Order;
 
 public class OrderDao {
 
-    private static final Map<Long, Order> IN_MEMORY_ORDER = new HashMap<>();
-    private static Long id = 1L;
+    private static final Map<Long, Order> IN_MEMORY_ORDER = new ConcurrentHashMap<>();
+    private static final AtomicLong ID = new AtomicLong(1);
 
     public Long save(Order order) {
-        Order newOrder = new Order(id++, order.getTotalPrice(), order.getDeliveryFare(), order.getOrderTime());
+        Order newOrder = new Order(ID.getAndIncrement(),
+                order.getTotalPrice(),
+                order.getDeliveryFare(),
+                order.getOrderTime());
         IN_MEMORY_ORDER.put(newOrder.getId(), newOrder);
         return newOrder.getId();
     }
