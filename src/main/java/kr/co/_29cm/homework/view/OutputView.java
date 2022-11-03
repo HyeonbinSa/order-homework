@@ -2,6 +2,8 @@ package kr.co._29cm.homework.view;
 
 import java.util.List;
 import kr.co._29cm.homework.domain.Product;
+import kr.co._29cm.homework.dto.OrderProductResponse;
+import kr.co._29cm.homework.dto.OrderResponse;
 
 public class OutputView {
 
@@ -21,5 +23,24 @@ public class OutputView {
 
     public static void printQuitMessage() {
         System.out.println("고객님의 주문 감사합니다.");
+    }
+
+    public static void printOrderInformation(OrderResponse orderResponse) {
+        System.out.println("주문내역 : ");
+        System.out.println("-------------------------------------------");
+        List<OrderProductResponse> orderProductResponses = orderResponse.getOrderProductResponses();
+        for (OrderProductResponse orderProductResponse : orderProductResponses) {
+            System.out.println(orderProductResponse.getName() + " - " + orderProductResponse.getQuantity() + "개");
+        }
+        System.out.println("-------------------------------------------");
+        System.out.print("주문금액: ");
+        System.out.println(orderResponse.getPrice() + "원");
+        if (orderResponse.getDeliveryFare() != 0) {
+            System.out.print("배송비: ");
+            System.out.println(orderResponse.getDeliveryFare() + "원");
+        }
+        System.out.println("-------------------------------------------");
+        System.out.print("지불금액: ");
+        System.out.println(orderResponse.getTotalPrice() + "원");
     }
 }

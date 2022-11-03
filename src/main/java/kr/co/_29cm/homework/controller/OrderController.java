@@ -23,10 +23,10 @@ public class OrderController {
         productService.init();
         List<Product> products = productService.findAll();
         OutputView.printProducts(products);
-        // 주문 시작
         Map<Long, Integer> orderRequests = generateOrderRequest();
         Long orderId = orderService.create(orderRequests);
         OrderResponse orderResponse = orderService.find(orderId);
+        OutputView.printOrderInformation(orderResponse);
     }
 
     private Map<Long, Integer> generateOrderRequest() {
@@ -41,7 +41,7 @@ public class OrderController {
                 orderRequests.put(productId, orderRequests.get(productId) + stock);
                 continue;
             }
-            orderRequests.put(productId, 0);
+            orderRequests.put(productId, stock);
         }
     }
 

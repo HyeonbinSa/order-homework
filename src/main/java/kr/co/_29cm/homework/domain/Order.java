@@ -17,7 +17,7 @@ public class Order {
     }
 
     public Order(int totalPrice, int deliveryFare) {
-        this(null, totalPrice, totalPrice, LocalDateTime.now());
+        this(null, totalPrice, deliveryFare, LocalDateTime.now());
     }
 
     public Long getId() {
