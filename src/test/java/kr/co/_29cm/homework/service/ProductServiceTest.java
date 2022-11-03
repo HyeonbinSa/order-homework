@@ -58,4 +58,17 @@ public class ProductServiceTest {
         // then
         assertEquals(product.size(), 2);
     }
+
+    @DisplayName("CSV 파일을 읽어 상품 목록을 초기화한다..")
+    @Test
+    void init() {
+        // given
+        productService.init();
+
+        // when
+        final List<Product> product = productService.findAll();
+
+        // then
+        assertEquals(product.size(), 5);
+    }
 }

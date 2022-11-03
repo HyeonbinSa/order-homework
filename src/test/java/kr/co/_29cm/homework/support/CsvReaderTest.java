@@ -16,7 +16,7 @@ public class CsvReaderTest {
         List<String[]> read = CsvReader.read("items.csv");
 
         // then
-        assertEquals(read.size(), 6);
+        assertEquals(read.size(), 5);
     }
 
     @DisplayName("파일명이 존재하지 않을 경우 예외를 반환한다.")

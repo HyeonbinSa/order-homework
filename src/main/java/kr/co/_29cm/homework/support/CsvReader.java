@@ -33,8 +33,8 @@ public class CsvReader {
 
     private static List<String[]> generateFileContents(BufferedReader reader) throws IOException {
         final List<String[]> fileContents = new ArrayList<>();
-        String line;
 
+        String line = reader.readLine();
         while ((line = reader.readLine()) != null) {
             final String[] lineItems = line.split(CSV_DIVIDER);
             fileContents.add(lineItems);
