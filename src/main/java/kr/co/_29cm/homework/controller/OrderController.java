@@ -9,7 +9,7 @@ import kr.co._29cm.homework.view.InputView;
 import kr.co._29cm.homework.view.OutputView;
 
 public class OrderController {
-    public static final String EMPTY = "";
+    
     final ProductService productService = new ProductService();
 
     public void run() {
