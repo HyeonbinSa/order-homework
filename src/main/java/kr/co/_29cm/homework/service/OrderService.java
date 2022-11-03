@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import kr.co._29cm.homework.dao.InMemoryOrderDao;
+import kr.co._29cm.homework.dao.InMemoryOrderProductDao;
+import kr.co._29cm.homework.dao.InMemoryProductDao;
 import kr.co._29cm.homework.dao.OrderDao;
 import kr.co._29cm.homework.dao.OrderProductDao;
 import kr.co._29cm.homework.dao.ProductDao;
@@ -20,9 +23,9 @@ public class OrderService {
     private final OrderProductDao orderProductDao;
 
     public OrderService() {
-        this.productDao = new ProductDao();
-        this.orderDao = new OrderDao();
-        this.orderProductDao = new OrderProductDao();
+        this.productDao = new InMemoryProductDao();
+        this.orderDao = new InMemoryOrderDao();
+        this.orderProductDao = new InMemoryOrderProductDao();
     }
 
     public Long create(Map<Long, Integer> orderRequests) {

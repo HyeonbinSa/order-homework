@@ -2,6 +2,7 @@ package kr.co._29cm.homework.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import kr.co._29cm.homework.dao.InMemoryProductDao;
 import kr.co._29cm.homework.dao.ProductDao;
 import kr.co._29cm.homework.domain.Product;
 import kr.co._29cm.homework.support.CsvReader;
@@ -11,7 +12,7 @@ public class ProductService {
     private final ProductDao productDao;
 
     public ProductService() {
-        this.productDao = new ProductDao();
+        this.productDao = new InMemoryProductDao();
     }
 
     public void init() {
