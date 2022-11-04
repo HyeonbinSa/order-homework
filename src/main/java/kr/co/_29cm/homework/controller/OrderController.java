@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Map;
 import kr.co._29cm.homework.dao.InMemoryProductDao;
 import kr.co._29cm.homework.domain.Product;
+import kr.co._29cm.homework.dto.CartResponse;
 import kr.co._29cm.homework.dto.OrderResponse;
+import kr.co._29cm.homework.service.CartService;
 import kr.co._29cm.homework.service.OrderService;
 import kr.co._29cm.homework.service.ProductService;
 import kr.co._29cm.homework.view.InputView;
@@ -15,6 +17,7 @@ public class OrderController {
 
     final ProductService productService = new ProductService(new InMemoryProductDao());
     final OrderService orderService = new OrderService();
+    final CartService cartService = new CartService();
 
     public void run() {
         if (!inputCommand()) {
@@ -25,7 +28,8 @@ public class OrderController {
         List<Product> products = productService.findAll();
         OutputView.printProducts(products);
         Map<Long, Integer> orderRequests = generateOrderRequest();
-        Long orderId = orderService.create(orderRequests);
+        Long cartId = cartService.create(orderRequests);
+        Long orderId = orderService.create(cartId);
         OrderResponse orderResponse = orderService.find(orderId);
         OutputView.printOrderInformation(orderResponse);
     }
