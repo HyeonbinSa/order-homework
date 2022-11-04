@@ -1,6 +1,7 @@
 package kr.co._29cm.homework.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -16,6 +17,7 @@ public class InMemoryCartItemDao implements CartItemDao {
     @Override
     public Long save(CartItem cartItem) {
         CartItem newCartItem = new CartItem(ID.getAndIncrement(),
+                cartItem.getCartId(),
                 cartItem.getProductId(),
                 cartItem.getName(),
                 cartItem.getPrice(),
@@ -34,5 +36,16 @@ public class InMemoryCartItemDao implements CartItemDao {
     @Override
     public CartItems findAll() {
         return new CartItems(new ArrayList<>(IN_MEMORY_CART_ITEM.values()));
+    }
+
+    @Override
+    public void deleteByCartId(Long cartId) {
+        final List<Long> cartItemIds = IN_MEMORY_CART_ITEM.values().stream()
+                .filter(cartItem -> cartItem.getCartId().equals(cartId))
+                .map(CartItem::getId)
+                .collect(Collectors.toList());
+        for (Long id : cartItemIds) {
+            IN_MEMORY_CART_ITEM.remove(id);
+        }
     }
 }

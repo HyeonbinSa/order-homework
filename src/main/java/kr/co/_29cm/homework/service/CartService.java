@@ -47,6 +47,6 @@ public class CartService {
 
     private CartItem generateCartItem(Entry<Long, Integer> orderRequest, Long cartId) {
         Product product = productDao.findById(orderRequest.getKey());
-        return new CartItem(product.getId(), product.getName(), product.getPrice(), orderRequest.getValue());
+        return new CartItem(cartId, product.getId(), product.getName(), product.getPrice(), orderRequest.getValue());
     }
 }

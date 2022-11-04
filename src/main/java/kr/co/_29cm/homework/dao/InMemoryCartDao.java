@@ -28,4 +28,9 @@ public class InMemoryCartDao implements CartDao {
     public List<Cart> findAll() {
         return new ArrayList<>(IN_MEMORY_CART.values());
     }
+
+    @Override
+    public void deleteById(Long id) {
+        IN_MEMORY_CART.remove(id);
+    }
 }

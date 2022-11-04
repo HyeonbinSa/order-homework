@@ -11,4 +11,6 @@ public interface CartItemDao {
     CartItems findByCartId(final Long cartId);
 
     CartItems findAll();
+
+    void deleteByCartId(Long cartId);
 }

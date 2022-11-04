@@ -2,7 +2,9 @@ package kr.co._29cm.homework.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import kr.co._29cm.homework.dao.CartDao;
 import kr.co._29cm.homework.dao.CartItemDao;
+import kr.co._29cm.homework.dao.InMemoryCartDao;
 import kr.co._29cm.homework.dao.InMemoryCartItemDao;
 import kr.co._29cm.homework.dao.InMemoryOrderDao;
 import kr.co._29cm.homework.dao.InMemoryOrderProductDao;
@@ -24,12 +26,14 @@ public class OrderService {
     private final OrderDao orderDao;
     private final OrderProductDao orderProductDao;
     private final CartItemDao cartItemDao;
+    private final CartDao cartDao;
 
     public OrderService() {
         this.productDao = new InMemoryProductDao();
         this.orderDao = new InMemoryOrderDao();
         this.orderProductDao = new InMemoryOrderProductDao();
         this.cartItemDao = new InMemoryCartItemDao();
+        this.cartDao =new InMemoryCartDao();
     }
 
     public Long create(Long cartId) {
@@ -43,6 +47,8 @@ public class OrderService {
             OrderProduct newOrderProduct = new OrderProduct(orderId, cartItem.getProductId(), cartItem.getQuantity());
             orderProductDao.save(newOrderProduct);
         }
+        cartDao.deleteById(cartId);
+        cartItemDao.deleteByCartId(cartId);
         return orderId;
     }
 
