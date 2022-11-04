@@ -4,11 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import kr.co._29cm.homework.dao.CartDao;
 import kr.co._29cm.homework.dao.CartItemDao;
-import kr.co._29cm.homework.dao.InMemoryCartDao;
-import kr.co._29cm.homework.dao.InMemoryCartItemDao;
-import kr.co._29cm.homework.dao.InMemoryOrderDao;
-import kr.co._29cm.homework.dao.InMemoryOrderProductDao;
-import kr.co._29cm.homework.dao.InMemoryProductDao;
 import kr.co._29cm.homework.dao.OrderDao;
 import kr.co._29cm.homework.dao.OrderProductDao;
 import kr.co._29cm.homework.dao.ProductDao;
@@ -29,12 +24,16 @@ public class OrderService {
     private final CartItemDao cartItemDao;
     private final CartDao cartDao;
 
-    public OrderService() {
-        this.productDao = new InMemoryProductDao();
-        this.orderDao = new InMemoryOrderDao();
-        this.orderProductDao = new InMemoryOrderProductDao();
-        this.cartItemDao = new InMemoryCartItemDao();
-        this.cartDao =new InMemoryCartDao();
+    public OrderService(final ProductDao productDao,
+                        final OrderDao orderDao,
+                        final OrderProductDao orderProductDao,
+                        final CartItemDao cartItemDao,
+                        final CartDao cartDao) {
+        this.productDao = productDao;
+        this.orderDao = orderDao;
+        this.orderProductDao = orderProductDao;
+        this.cartItemDao = cartItemDao;
+        this.cartDao = cartDao;
     }
 
     public Long create(Long cartId) {
@@ -47,6 +46,7 @@ public class OrderService {
         for (CartItem cartItem : cartItems.getValue()) {
             OrderProduct newOrderProduct = new OrderProduct(orderId, cartItem.getProductId(), cartItem.getQuantity());
             orderProductDao.save(newOrderProduct);
+            productDao.updateStock(cartItem.getCartId(), cartItem.getQuantity());
         }
         cartDao.deleteById(cartId);
         cartItemDao.deleteByCartId(cartId);

@@ -35,4 +35,10 @@ public class InMemoryProductDao implements ProductDao {
     public List<Product> findAll() {
         return new ArrayList<>(IN_MEMORY_PRODUCTS.values());
     }
+
+    @Override
+    public void updateStock(Long productId, int quantity) {
+        Product product = IN_MEMORY_PRODUCTS.get(productId);
+        product.sell(quantity);
+    }
 }

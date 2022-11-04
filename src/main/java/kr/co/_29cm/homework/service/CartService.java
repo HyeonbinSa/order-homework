@@ -5,9 +5,6 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import kr.co._29cm.homework.dao.CartDao;
 import kr.co._29cm.homework.dao.CartItemDao;
-import kr.co._29cm.homework.dao.InMemoryCartDao;
-import kr.co._29cm.homework.dao.InMemoryCartItemDao;
-import kr.co._29cm.homework.dao.InMemoryProductDao;
 import kr.co._29cm.homework.dao.ProductDao;
 import kr.co._29cm.homework.domain.Cart;
 import kr.co._29cm.homework.domain.CartItem;
@@ -22,10 +19,12 @@ public class CartService {
     private final CartItemDao cartItemDao;
     private final ProductDao productDao;
 
-    public CartService() {
-        this.cartDao = new InMemoryCartDao();
-        this.cartItemDao = new InMemoryCartItemDao();
-        this.productDao = new InMemoryProductDao();
+    public CartService(final CartDao cartDao,
+                       final CartItemDao cartItemDao,
+                       final ProductDao productDao) {
+        this.cartDao = cartDao;
+        this.cartItemDao = cartItemDao;
+        this.productDao = productDao;
     }
 
     public Long create(CartRequest cartRequest) {
