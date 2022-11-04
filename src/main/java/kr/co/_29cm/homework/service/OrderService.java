@@ -19,6 +19,7 @@ import kr.co._29cm.homework.domain.OrderProduct;
 import kr.co._29cm.homework.domain.Product;
 import kr.co._29cm.homework.dto.OrderProductResponse;
 import kr.co._29cm.homework.dto.OrderResponse;
+import kr.co._29cm.homework.exception.SoldOutException;
 
 public class OrderService {
 
@@ -63,7 +64,7 @@ public class OrderService {
         for (CartItem cartItem : cartItems.getValue()) {
             Product product = productDao.findById(cartItem.getProductId());
             if (product.getStock() < cartItem.getQuantity()) {
-                throw new IllegalArgumentException("개수 초과");
+                throw new SoldOutException("SoldOutException 발생. 주문한 상품량이 재고량보다 큽니다.");
             }
         }
     }

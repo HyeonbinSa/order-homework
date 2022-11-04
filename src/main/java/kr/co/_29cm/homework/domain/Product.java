@@ -39,13 +39,6 @@ public class Product {
         }
     }
 
-    public void calculateStock(int quantity) {
-        if (this.stock < quantity) {
-            throw new IllegalArgumentException("SoldOutException 발생. 주문한 상품량이 재고량보다 큽니다.");
-        }
-        this.stock -= quantity;
-    }
-
     public Long getId() {
         return id;
     }
