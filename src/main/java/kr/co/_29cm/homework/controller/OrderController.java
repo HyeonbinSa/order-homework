@@ -3,6 +3,7 @@ package kr.co._29cm.homework.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import kr.co._29cm.homework.dao.InMemoryProductDao;
 import kr.co._29cm.homework.domain.Product;
 import kr.co._29cm.homework.dto.OrderResponse;
 import kr.co._29cm.homework.service.OrderService;
@@ -12,7 +13,7 @@ import kr.co._29cm.homework.view.OutputView;
 
 public class OrderController {
 
-    final ProductService productService = new ProductService();
+    final ProductService productService = new ProductService(new InMemoryProductDao());
     final OrderService orderService = new OrderService();
 
     public void run() {

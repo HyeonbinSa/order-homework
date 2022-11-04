@@ -3,6 +3,7 @@ package kr.co._29cm.homework.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
+import kr.co._29cm.homework.dao.FakeProductDao;
 import kr.co._29cm.homework.domain.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,7 +15,7 @@ public class ProductServiceTest {
 
     @BeforeEach
     void beforeEach() {
-        productService = new ProductService();
+        productService = new ProductService(new FakeProductDao());
     }
 
     @DisplayName("상품을 저장한다.")

@@ -12,7 +12,7 @@ public class InMemoryOrderProductDaoTest {
     @Test
     void save() {
         // given
-        final InMemoryOrderProductDao inMemoryOrderProductDao = new InMemoryOrderProductDao();
+        final OrderProductDao inMemoryOrderProductDao = new FakeOrderProductDao();
         final OrderProduct orderProduct = new OrderProduct(1L, 1L, 10);
 
         // when & then
