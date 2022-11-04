@@ -40,6 +40,7 @@ public class OrderController {
         this.productService = new ProductService(productDao);
         this.cartService = new CartService(cartDao, cartItemDao, productDao);
         this.orderService = new OrderService(productDao, orderDao, orderProductDao, cartItemDao, cartDao);
+        productService.init();
     }
 
     public void run() {
@@ -48,7 +49,6 @@ public class OrderController {
             return;
         }
         try {
-            productService.init();
             List<Product> products = productService.findAll();
             OutputView.printProducts(products);
             CartRequest cartRequest = InputView.inputCartInformation();

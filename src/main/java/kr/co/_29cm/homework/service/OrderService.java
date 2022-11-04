@@ -11,10 +11,8 @@ import kr.co._29cm.homework.domain.CartItem;
 import kr.co._29cm.homework.domain.CartItems;
 import kr.co._29cm.homework.domain.Order;
 import kr.co._29cm.homework.domain.OrderProduct;
-import kr.co._29cm.homework.domain.Product;
 import kr.co._29cm.homework.dto.OrderProductResponse;
 import kr.co._29cm.homework.dto.OrderResponse;
-import kr.co._29cm.homework.exception.SoldOutException;
 
 public class OrderService {
 
@@ -38,7 +36,6 @@ public class OrderService {
 
     public Long create(Long cartId) {
         CartItems cartItems = cartItemDao.findByCartId(cartId);
-        validateProductStock(cartItems);
         int totalPrice = cartItems.calculateTotalPrice();
         int deliveryFare = calculateDeliveryFare(totalPrice);
         Order order = new Order(totalPrice, deliveryFare);
@@ -46,11 +43,15 @@ public class OrderService {
         for (CartItem cartItem : cartItems.getValue()) {
             OrderProduct newOrderProduct = new OrderProduct(orderId, cartItem.getProductId(), cartItem.getQuantity());
             orderProductDao.save(newOrderProduct);
-            productDao.updateStock(cartItem.getCartId(), cartItem.getQuantity());
+            calculateProductStock(cartItem);
         }
         cartDao.deleteById(cartId);
         cartItemDao.deleteByCartId(cartId);
         return orderId;
+    }
+
+    private void calculateProductStock(CartItem cartItem) {
+        productDao.findById(cartItem.getCartId()).sell(cartItem.getQuantity());
     }
 
     private int calculateDeliveryFare(int totalPrice) {
@@ -58,15 +59,6 @@ public class OrderService {
             return 2500;
         }
         return 0;
-    }
-
-    private void validateProductStock(CartItems cartItems) {
-        for (CartItem cartItem : cartItems.getValue()) {
-            Product product = productDao.findById(cartItem.getProductId());
-            if (product.getStock() < cartItem.getQuantity()) {
-                throw new SoldOutException("SoldOutException 발생. 주문한 상품량이 재고량보다 큽니다.");
-            }
-        }
     }
 
     public OrderResponse find(Long orderId) {

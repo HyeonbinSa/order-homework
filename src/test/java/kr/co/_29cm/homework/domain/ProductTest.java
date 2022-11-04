@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import kr.co._29cm.homework.exception.SoldOutException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -54,7 +55,7 @@ public class ProductTest {
         Product 파버카스텔_연필1자루 = new Product(760709L, "파버카스텔 연필1자루", 200, 10);
 
         // when
-        파버카스텔_연필1자루.calculateStock(7);
+        파버카스텔_연필1자루.sell(7);
 
         // then
         assertEquals(파버카스텔_연필1자루.getStock(), 3);
@@ -67,8 +68,8 @@ public class ProductTest {
         Product 파버카스텔_연필1자루 = new Product(760709L, "파버카스텔 연필1자루", 200, 10);
 
         // when & then
-        assertThrows(IllegalArgumentException.class,
-                () -> 파버카스텔_연필1자루.calculateStock(11),
+        assertThrows(SoldOutException.class,
+                () -> 파버카스텔_연필1자루.sell(11),
                 "SoldOutException 발생. 주문한 상품량이 재고량보다 큽니다.");
     }
 }

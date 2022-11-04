@@ -10,6 +10,4 @@ public interface ProductDao {
     Product findById(Long id);
 
     List<Product> findAll();
-
-    void updateStock(Long cartId, int quantity);
 }

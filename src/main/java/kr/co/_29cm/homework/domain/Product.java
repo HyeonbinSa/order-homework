@@ -1,5 +1,7 @@
 package kr.co._29cm.homework.domain;
 
+import kr.co._29cm.homework.exception.SoldOutException;
+
 public class Product {
 
     private static final String EMPTY_NAME = "";
@@ -40,6 +42,9 @@ public class Product {
     }
 
     public void sell(int quantity) {
+        if (stock < quantity) {
+            throw new SoldOutException("SoldOutException 발생. 주문한 상품량이 재고량보다 큽니다.");
+        }
         this.stock -= quantity;
     }
 
