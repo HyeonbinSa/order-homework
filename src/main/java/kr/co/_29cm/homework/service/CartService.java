@@ -1,7 +1,6 @@
 package kr.co._29cm.homework.service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import kr.co._29cm.homework.dao.CartDao;
@@ -14,6 +13,7 @@ import kr.co._29cm.homework.domain.Cart;
 import kr.co._29cm.homework.domain.CartItem;
 import kr.co._29cm.homework.domain.CartItems;
 import kr.co._29cm.homework.domain.Product;
+import kr.co._29cm.homework.dto.CartRequest;
 import kr.co._29cm.homework.dto.CartResponse;
 
 public class CartService {
@@ -28,9 +28,9 @@ public class CartService {
         this.productDao = new InMemoryProductDao();
     }
 
-    public Long create(Map<Long, Integer> orderRequests) {
+    public Long create(CartRequest cartRequest) {
         Long createdCartId = cartDao.save();
-        List<CartItem> cartItems = orderRequests.entrySet().stream()
+        List<CartItem> cartItems = cartRequest.getCartRequests().entrySet().stream()
                 .map(entry -> generateCartItem(entry, createdCartId))
                 .collect(Collectors.toList());
         for (CartItem cartItem : cartItems) {
