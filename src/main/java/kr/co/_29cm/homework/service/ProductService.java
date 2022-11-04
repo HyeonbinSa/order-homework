@@ -10,8 +10,8 @@ public class ProductService {
 
     private final ProductDao productDao;
 
-    public ProductService() {
-        this.productDao = new ProductDao();
+    public ProductService(ProductDao productDao) {
+        this.productDao = productDao;
     }
 
     public void init() {

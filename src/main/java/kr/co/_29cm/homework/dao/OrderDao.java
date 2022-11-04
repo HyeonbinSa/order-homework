@@ -1,21 +1,10 @@
 package kr.co._29cm.homework.dao;
 
-import java.util.HashMap;
-import java.util.Map;
 import kr.co._29cm.homework.domain.Order;
 
-public class OrderDao {
+public interface OrderDao {
 
-    private static final Map<Long, Order> IN_MEMORY_ORDER = new HashMap<>();
-    private static Long id = 1L;
+    Long save(Order order);
 
-    public Long save(Order order) {
-        Order newOrder = new Order(id++, order.getTotalPrice(), order.getDeliveryFare(), order.getOrderTime());
-        IN_MEMORY_ORDER.put(newOrder.getId(), newOrder);
-        return newOrder.getId();
-    }
-
-    public Order findById(Long orderId) {
-        return IN_MEMORY_ORDER.get(orderId);
-    }
+    Order findById(Long orderId);
 }
