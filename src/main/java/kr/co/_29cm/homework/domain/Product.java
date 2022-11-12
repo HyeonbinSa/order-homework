@@ -42,10 +42,14 @@ public class Product {
     }
 
     public void sell(int quantity) {
+
+        this.stock -= quantity;
+    }
+
+    public void validateOrderStock(int quantity) {
         if (stock < quantity) {
             throw new SoldOutException("SoldOutException 발생. 주문한 상품량이 재고량보다 큽니다.");
         }
-        this.stock -= quantity;
     }
 
     public Long getId() {

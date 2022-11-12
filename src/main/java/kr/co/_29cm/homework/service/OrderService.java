@@ -11,6 +11,7 @@ import kr.co._29cm.homework.domain.CartItem;
 import kr.co._29cm.homework.domain.CartItems;
 import kr.co._29cm.homework.domain.Order;
 import kr.co._29cm.homework.domain.OrderProduct;
+import kr.co._29cm.homework.domain.Product;
 import kr.co._29cm.homework.dto.OrderProductResponse;
 import kr.co._29cm.homework.dto.OrderResponse;
 
@@ -36,29 +37,36 @@ public class OrderService {
 
     public Long create(Long cartId) {
         CartItems cartItems = cartItemDao.findByCartId(cartId);
-        int totalPrice = cartItems.calculateTotalPrice();
-        int deliveryFare = calculateDeliveryFare(totalPrice);
-        Order order = new Order(totalPrice, deliveryFare);
+        validateProductStock(cartItems);
+        Order order = Order.from(cartItems.calculateTotalPrice());
         Long orderId = orderDao.save(order);
+        orderCartItems(cartItems, orderId);
+        deleteCart(cartId);
+        return orderId;
+    }
+
+    private void validateProductStock(CartItems cartItems) {
+        for (CartItem cartItem : cartItems.getValue()) {
+            Product product = productDao.findById(cartItem.getProductId());
+            product.validateOrderStock(cartItem.getQuantity());
+        }
+    }
+
+    private void orderCartItems(CartItems cartItems, Long orderId) {
         for (CartItem cartItem : cartItems.getValue()) {
             OrderProduct newOrderProduct = new OrderProduct(orderId, cartItem.getProductId(), cartItem.getQuantity());
             orderProductDao.save(newOrderProduct);
             calculateProductStock(cartItem);
         }
-        cartDao.deleteById(cartId);
-        cartItemDao.deleteByCartId(cartId);
-        return orderId;
     }
 
     private void calculateProductStock(CartItem cartItem) {
-        productDao.findById(cartItem.getCartId()).sell(cartItem.getQuantity());
+        productDao.findById(cartItem.getProductId()).sell(cartItem.getQuantity());
     }
 
-    private int calculateDeliveryFare(int totalPrice) {
-        if (totalPrice < 50000) {
-            return 2500;
-        }
-        return 0;
+    private void deleteCart(Long cartId) {
+        cartItemDao.deleteByCartId(cartId);
+        cartDao.deleteById(cartId);
     }
 
     public OrderResponse find(Long orderId) {
