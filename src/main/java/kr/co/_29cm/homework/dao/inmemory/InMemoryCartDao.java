@@ -1,4 +1,4 @@
-package kr.co._29cm.homework.dao;
+package kr.co._29cm.homework.dao.inmemory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
+import kr.co._29cm.homework.dao.CartDao;
 import kr.co._29cm.homework.domain.Cart;
 
 public class InMemoryCartDao implements CartDao {

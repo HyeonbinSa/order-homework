@@ -1,9 +1,10 @@
-package kr.co._29cm.homework.dao;
+package kr.co._29cm.homework.dao.inmemory;
 
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
+import kr.co._29cm.homework.dao.OrderDao;
 import kr.co._29cm.homework.domain.Order;
 
 public class InMemoryOrderDao implements OrderDao {
