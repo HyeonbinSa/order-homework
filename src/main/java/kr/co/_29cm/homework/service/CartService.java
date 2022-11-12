@@ -40,7 +40,8 @@ public class CartService {
     }
 
     public CartResponse findByCartId(Long cartId) {
-        Cart cart = cartDao.findById(cartId);
+        Cart cart = cartDao.findById(cartId)
+                .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 장바구니입니다."));
         CartItems cartItems = cartItemDao.findByCartId(cart.getId());
         return CartResponse.of(cart, cartItems.getValue());
     }
