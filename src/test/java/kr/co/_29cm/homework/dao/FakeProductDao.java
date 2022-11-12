@@ -3,6 +3,7 @@ package kr.co._29cm.homework.dao;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import kr.co._29cm.homework.domain.Product;
@@ -32,8 +33,8 @@ public class FakeProductDao implements ProductDao {
     }
 
     @Override
-    public Product findById(Long id) {
-        return IN_MEMORY_PRODUCTS.get(id);
+    public Optional<Product> findById(Long id) {
+        return Optional.ofNullable(IN_MEMORY_PRODUCTS.get(id));
     }
 
     @Override

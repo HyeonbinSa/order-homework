@@ -46,7 +46,8 @@ public class CartService {
     }
 
     private CartItem generateCartItem(Entry<Long, Integer> orderRequest, Long cartId) {
-        Product product = productDao.findById(orderRequest.getKey());
+        Product product = productDao.findById(orderRequest.getKey())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
         return new CartItem(cartId, product.getId(), product.getName(), product.getPrice(), orderRequest.getValue());
     }
 

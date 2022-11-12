@@ -47,7 +47,8 @@ public class OrderService {
 
     private void validateProductStock(CartItems cartItems) {
         for (CartItem cartItem : cartItems.getValue()) {
-            Product product = productDao.findById(cartItem.getProductId());
+            Product product = productDao.findById(cartItem.getProductId())
+                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
             product.validateOrderStock(cartItem.getQuantity());
         }
     }
@@ -61,7 +62,9 @@ public class OrderService {
     }
 
     private void calculateProductStock(CartItem cartItem) {
-        productDao.findById(cartItem.getProductId()).sell(cartItem.getQuantity());
+        Product product = productDao.findById(cartItem.getProductId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
+        product.sell(cartItem.getQuantity());
     }
 
     private void deleteCart(Long cartId) {
@@ -74,7 +77,9 @@ public class OrderService {
         List<OrderProduct> orderProducts = orderProductDao.findByOrderId(orderId);
         List<OrderProductResponse> orderProductResponses = orderProducts.stream()
                 .map(orderProduct -> new OrderProductResponse(
-                        productDao.findById(orderProduct.getProductId()).getName(),
+                        productDao.findById(orderProduct.getProductId())
+                                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."))
+                                .getName(),
                         orderProduct.getQuantity()))
                 .collect(Collectors.toList());
         return OrderResponse.of(order, orderProductResponses);
