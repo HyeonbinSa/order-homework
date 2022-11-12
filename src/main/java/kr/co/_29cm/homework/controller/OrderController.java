@@ -52,7 +52,7 @@ public class OrderController {
     }
 
     public void run() {
-        if (!inputCommand()) {
+        if (!InputView.inputStartCommand()) {
             OutputView.printQuitMessage();
             return;
         }
@@ -68,15 +68,5 @@ public class OrderController {
             System.out.println(e.getMessage());
         }
         run();
-    }
-
-
-    private boolean inputCommand() {
-        try {
-            return InputView.inputStartCommand();
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-            return inputCommand();
-        }
     }
 }
