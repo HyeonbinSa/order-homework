@@ -14,9 +14,11 @@ import kr.co._29cm.homework.dao.ProductDao;
 import kr.co._29cm.homework.domain.Product;
 import kr.co._29cm.homework.dto.CartRequest;
 import kr.co._29cm.homework.dto.OrderResponse;
+import kr.co._29cm.homework.dto.request.ProductRequest;
 import kr.co._29cm.homework.service.CartService;
 import kr.co._29cm.homework.service.OrderService;
 import kr.co._29cm.homework.service.ProductService;
+import kr.co._29cm.homework.support.ProductInitializer;
 import kr.co._29cm.homework.view.InputView;
 import kr.co._29cm.homework.view.OutputView;
 
@@ -40,7 +42,13 @@ public class OrderController {
         this.productService = new ProductService(productDao);
         this.cartService = new CartService(cartDao, cartItemDao, productDao);
         this.orderService = new OrderService(productDao, orderDao, orderProductDao, cartItemDao, cartDao);
-        productService.init();
+    }
+
+    public void init(){
+        List<ProductRequest> productRequests = ProductInitializer.init();
+        for(ProductRequest productRequest: productRequests){
+            productService.create(productRequest);
+        }
     }
 
     public void run() {
