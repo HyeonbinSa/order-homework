@@ -73,7 +73,8 @@ public class OrderService {
     }
 
     public OrderResponse find(Long orderId) {
-        Order order = orderDao.findById(orderId);
+        Order order = orderDao.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 주문입니다."));
         List<OrderProduct> orderProducts = orderProductDao.findByOrderId(orderId);
         List<OrderProductResponse> orderProductResponses = orderProducts.stream()
                 .map(orderProduct -> new OrderProductResponse(
