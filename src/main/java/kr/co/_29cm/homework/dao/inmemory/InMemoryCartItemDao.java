@@ -30,7 +30,7 @@ public class InMemoryCartItemDao implements CartItemDao {
     @Override
     public CartItems findByCartId(Long cartId) {
         return new CartItems(IN_MEMORY_CART_ITEM.values().stream()
-                .filter(cartItem -> cartItem.getId().equals(cartId))
+                .filter(cartItem -> cartItem.getCartId().equals(cartId))
                 .collect(Collectors.toList()));
     }
 
