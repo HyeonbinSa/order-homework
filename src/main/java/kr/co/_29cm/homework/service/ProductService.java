@@ -1,5 +1,6 @@
 package kr.co._29cm.homework.service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import kr.co._29cm.homework.dao.ProductDao;
@@ -15,7 +16,8 @@ public class ProductService {
     }
 
     public void init() {
-        final List<String[]> lines = CsvReader.read("items.csv");
+        final List<String[]> lines = CsvReader.read("items_homework.csv");
+        lines.remove(0);
         final List<Product> products = generateProducts(lines);
         for (Product product : products) {
             productDao.save(product);
@@ -35,15 +37,16 @@ public class ProductService {
     }
 
     private List<Product> generateProducts(List<String[]> lines) {
-        return lines.stream().map(this::toProduct)
+        return lines.stream()
+                .map(this::toProduct)
                 .collect(Collectors.toList());
     }
 
     private Product toProduct(final String[] line) {
         final Long id = Long.parseLong(line[0]);
-        final String name = line[1];
-        final int price = Integer.parseInt(line[2]);
-        final int stock = Integer.parseInt(line[3]);
+        final String name = String.join(",", Arrays.copyOfRange(line, 1, line.length - 2));
+        final int price = Integer.parseInt(line[line.length - 2]);
+        final int stock = Integer.parseInt(line[line.length - 1]);
         return new Product(id, name, price, stock);
     }
 }
