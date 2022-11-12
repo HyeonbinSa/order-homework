@@ -42,6 +42,7 @@ public class Product {
     }
 
     public void sell(int quantity) {
+        validateOrderStock(quantity);
         this.stock -= quantity;
     }
 

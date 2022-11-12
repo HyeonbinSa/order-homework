@@ -4,6 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 import kr.co._29cm.homework.exception.SoldOutException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -71,5 +75,32 @@ public class ProductTest {
         assertThrows(SoldOutException.class,
                 () -> 파버카스텔_연필1자루.validateOrderStock(11),
                 "SoldOutException 발생. 주문한 상품량이 재고량보다 큽니다.");
+    }
+
+    @DisplayName("상품을 동시에 주문 시 재고보다 많은 양을 주문한다면 예외를 반환한다.")
+    @Test
+    void sell() throws InterruptedException {
+        // given
+        Product 파버카스텔_연필1자루 = new Product(760709L, "파버카스텔 연필1자루", 200, 10);
+        int countOfThread = 20;
+
+        AtomicInteger count = new AtomicInteger(0);
+        CountDownLatch start = new CountDownLatch(countOfThread);
+        CountDownLatch end = new CountDownLatch(countOfThread);
+        ExecutorService service = Executors.newFixedThreadPool(countOfThread);
+
+        // when & then
+        for (int i = 0; i < countOfThread; i++) {
+            service.execute(() -> {
+                try {
+                    start.countDown();
+                    파버카스텔_연필1자루.sell(1);
+                } catch (SoldOutException e) {
+                    count.incrementAndGet();
+                }
+            });
+        }
+        start.await();
+        assertEquals(count.get(), 10);
     }
 }
