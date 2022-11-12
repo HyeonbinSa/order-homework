@@ -63,13 +63,13 @@ public class ProductTest {
 
     @DisplayName("상품 주문 시 재고보다 많은 양을 주문한다면 예외를 반환한다.")
     @Test
-    void calculateStock_WhenOutOfStock() {
+    void validateOrderStock_WhenOutOfStock() {
         // given
         Product 파버카스텔_연필1자루 = new Product(760709L, "파버카스텔 연필1자루", 200, 10);
 
         // when & then
         assertThrows(SoldOutException.class,
-                () -> 파버카스텔_연필1자루.sell(11),
+                () -> 파버카스텔_연필1자루.validateOrderStock(11),
                 "SoldOutException 발생. 주문한 상품량이 재고량보다 큽니다.");
     }
 }

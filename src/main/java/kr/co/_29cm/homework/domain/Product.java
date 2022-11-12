@@ -42,7 +42,6 @@ public class Product {
     }
 
     public void sell(int quantity) {
-
         this.stock -= quantity;
     }
 

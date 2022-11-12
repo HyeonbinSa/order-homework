@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
 import kr.co._29cm.homework.dao.FakeProductDao;
 import kr.co._29cm.homework.domain.Product;
+import kr.co._29cm.homework.dto.request.ProductRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,7 @@ public class ProductServiceTest {
     @Test
     void save() {
         // given
-        final Product 파버카스텔_연필1자루 = new Product(760709L, "파버카스텔 연필1자루", 200, 50);
+        final ProductRequest 파버카스텔_연필1자루 = new ProductRequest(760709L, "파버카스텔 연필1자루", 200, 50);
 
         // when
         final Long id = productService.create(파버카스텔_연필1자루);
@@ -35,7 +36,7 @@ public class ProductServiceTest {
     @Test
     void findById() {
         // given
-        final Product 파버카스텔_연필1자루 = new Product(760709L, "파버카스텔 연필1자루", 200, 50);
+        final ProductRequest 파버카스텔_연필1자루 = new ProductRequest(760709L, "파버카스텔 연필1자루", 200, 50);
         final Long id = productService.create(파버카스텔_연필1자루);
 
         // when
@@ -48,8 +49,8 @@ public class ProductServiceTest {
     @Test
     void findAll() {
         // given
-        final Product 파버카스텔_연필1자루 = new Product(760709L, "파버카스텔 연필1자루", 200, 50);
-        final Product 캠핑덕_우드롤테이블 = new Product(778422L, "캠핑덕 우드롤테이블", 45000, 7);
+        final ProductRequest 파버카스텔_연필1자루 = new ProductRequest(760709L, "파버카스텔 연필1자루", 200, 50);
+        final ProductRequest 캠핑덕_우드롤테이블 = new ProductRequest(778422L, "캠핑덕 우드롤테이블", 45000, 7);
         productService.create(파버카스텔_연필1자루);
         productService.create(캠핑덕_우드롤테이블);
 
@@ -58,18 +59,5 @@ public class ProductServiceTest {
 
         // then
         assertEquals(product.size(), 2);
-    }
-
-    @DisplayName("CSV 파일을 읽어 상품 목록을 초기화한다..")
-    @Test
-    void init() {
-        // given
-        productService.init();
-
-        // when
-        final List<Product> product = productService.findAll();
-
-        // then
-        assertEquals(product.size(), 5);
     }
 }
