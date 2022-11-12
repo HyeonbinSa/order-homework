@@ -1,4 +1,4 @@
-package kr.co._29cm.homework.dto;
+package kr.co._29cm.homework.dto.response;
 
 import java.util.List;
 import kr.co._29cm.homework.domain.Order;

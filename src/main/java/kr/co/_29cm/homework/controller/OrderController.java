@@ -12,9 +12,10 @@ import kr.co._29cm.homework.dao.OrderDao;
 import kr.co._29cm.homework.dao.OrderProductDao;
 import kr.co._29cm.homework.dao.ProductDao;
 import kr.co._29cm.homework.domain.Product;
-import kr.co._29cm.homework.dto.CartRequest;
-import kr.co._29cm.homework.dto.OrderResponse;
+import kr.co._29cm.homework.dto.request.CartRequest;
+import kr.co._29cm.homework.dto.response.OrderResponse;
 import kr.co._29cm.homework.dto.request.ProductRequest;
+import kr.co._29cm.homework.dto.response.ProductResponse;
 import kr.co._29cm.homework.service.CartService;
 import kr.co._29cm.homework.service.OrderService;
 import kr.co._29cm.homework.service.ProductService;
@@ -57,7 +58,7 @@ public class OrderController {
             return;
         }
         try {
-            List<Product> products = productService.findAll();
+            List<ProductResponse> products = productService.findAll();
             OutputView.printProducts(products);
             CartRequest cartRequest = InputView.inputCartInformation();
             Long cartId = cartService.create(cartRequest);

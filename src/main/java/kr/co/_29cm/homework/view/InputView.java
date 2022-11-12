@@ -3,7 +3,7 @@ package kr.co._29cm.homework.view;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-import kr.co._29cm.homework.dto.CartRequest;
+import kr.co._29cm.homework.dto.request.CartRequest;
 
 public class InputView {
 

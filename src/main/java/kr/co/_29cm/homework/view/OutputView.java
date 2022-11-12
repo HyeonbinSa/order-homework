@@ -2,17 +2,18 @@ package kr.co._29cm.homework.view;
 
 import java.util.List;
 import kr.co._29cm.homework.domain.Product;
-import kr.co._29cm.homework.dto.OrderProductResponse;
-import kr.co._29cm.homework.dto.OrderResponse;
+import kr.co._29cm.homework.dto.response.OrderProductResponse;
+import kr.co._29cm.homework.dto.response.OrderResponse;
+import kr.co._29cm.homework.dto.response.ProductResponse;
 
 public class OutputView {
 
     private static final String PRODUCT_INFORMATION_HEADER = "%-7s %-35s %-10s %-4s\n";
     private static final String PRODUCT_INFORMATION = "%-9d %-35s %-10d  %-4d\n";
 
-    public static void printProducts(List<Product> products) {
+    public static void printProducts(List<ProductResponse> products) {
         System.out.printf(PRODUCT_INFORMATION_HEADER, "상품번호", "상품명", "판매가격", "재고 수");
-        for (Product product : products) {
+        for (ProductResponse product : products) {
             System.out.printf(PRODUCT_INFORMATION,
                     product.getId(),
                     product.getName(),

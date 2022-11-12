@@ -10,8 +10,8 @@ import kr.co._29cm.homework.domain.Cart;
 import kr.co._29cm.homework.domain.CartItem;
 import kr.co._29cm.homework.domain.CartItems;
 import kr.co._29cm.homework.domain.Product;
-import kr.co._29cm.homework.dto.CartRequest;
-import kr.co._29cm.homework.dto.CartResponse;
+import kr.co._29cm.homework.dto.request.CartRequest;
+import kr.co._29cm.homework.dto.response.CartResponse;
 
 public class CartService {
 

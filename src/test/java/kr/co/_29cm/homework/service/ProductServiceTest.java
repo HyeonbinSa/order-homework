@@ -6,6 +6,7 @@ import java.util.List;
 import kr.co._29cm.homework.dao.FakeProductDao;
 import kr.co._29cm.homework.domain.Product;
 import kr.co._29cm.homework.dto.request.ProductRequest;
+import kr.co._29cm.homework.dto.response.ProductResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,7 +41,7 @@ public class ProductServiceTest {
         final Long id = productService.create(파버카스텔_연필1자루);
 
         // when
-        final Product product = productService.findById(id);
+        final ProductResponse product = productService.findById(id);
         // then
         assertEquals(product.getId(), 파버카스텔_연필1자루.getId());
     }
@@ -55,7 +56,7 @@ public class ProductServiceTest {
         productService.create(캠핑덕_우드롤테이블);
 
         // when
-        final List<Product> product = productService.findAll();
+        final List<ProductResponse> product = productService.findAll();
 
         // then
         assertEquals(product.size(), 2);

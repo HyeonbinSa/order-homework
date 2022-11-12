@@ -12,8 +12,8 @@ import kr.co._29cm.homework.domain.CartItems;
 import kr.co._29cm.homework.domain.Order;
 import kr.co._29cm.homework.domain.OrderProduct;
 import kr.co._29cm.homework.domain.Product;
-import kr.co._29cm.homework.dto.OrderProductResponse;
-import kr.co._29cm.homework.dto.OrderResponse;
+import kr.co._29cm.homework.dto.response.OrderProductResponse;
+import kr.co._29cm.homework.dto.response.OrderResponse;
 
 public class OrderService {
 
