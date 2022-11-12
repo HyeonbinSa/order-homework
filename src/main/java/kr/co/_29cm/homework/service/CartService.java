@@ -28,6 +28,7 @@ public class CartService {
     }
 
     public Long create(CartRequest cartRequest) {
+        validateEmptyCart(cartRequest);
         Long createdCartId = cartDao.save();
         List<CartItem> cartItems = cartRequest.getCartRequests().entrySet().stream()
                 .map(entry -> generateCartItem(entry, createdCartId))
@@ -47,5 +48,11 @@ public class CartService {
     private CartItem generateCartItem(Entry<Long, Integer> orderRequest, Long cartId) {
         Product product = productDao.findById(orderRequest.getKey());
         return new CartItem(cartId, product.getId(), product.getName(), product.getPrice(), orderRequest.getValue());
+    }
+
+    private void validateEmptyCart(CartRequest cartRequest) {
+        if (cartRequest.getCartRequests().size() == 0) {
+            throw new IllegalArgumentException("장바구니가 비어있습니다.");
+        }
     }
 }
