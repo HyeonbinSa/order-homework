@@ -3,17 +3,17 @@ package kr.co._29cm.homework.controller;
 import java.util.List;
 import kr.co._29cm.homework.dao.CartDao;
 import kr.co._29cm.homework.dao.CartItemDao;
+import kr.co._29cm.homework.dao.OrderDao;
+import kr.co._29cm.homework.dao.OrderProductDao;
+import kr.co._29cm.homework.dao.ProductDao;
 import kr.co._29cm.homework.dao.inmemory.InMemoryCartDao;
 import kr.co._29cm.homework.dao.inmemory.InMemoryCartItemDao;
 import kr.co._29cm.homework.dao.inmemory.InMemoryOrderDao;
 import kr.co._29cm.homework.dao.inmemory.InMemoryOrderProductDao;
 import kr.co._29cm.homework.dao.inmemory.InMemoryProductDao;
-import kr.co._29cm.homework.dao.OrderDao;
-import kr.co._29cm.homework.dao.OrderProductDao;
-import kr.co._29cm.homework.dao.ProductDao;
 import kr.co._29cm.homework.dto.request.CartRequest;
-import kr.co._29cm.homework.dto.response.OrderResponse;
 import kr.co._29cm.homework.dto.request.ProductRequest;
+import kr.co._29cm.homework.dto.response.OrderResponse;
 import kr.co._29cm.homework.dto.response.ProductResponse;
 import kr.co._29cm.homework.service.CartService;
 import kr.co._29cm.homework.service.OrderService;
@@ -44,9 +44,10 @@ public class OrderController {
         this.orderService = new OrderService(productDao, orderDao, orderProductDao, cartItemDao, cartDao);
     }
 
-    public void init(){
-        List<ProductRequest> productRequests = ProductInitializer.init();
-        for(ProductRequest productRequest: productRequests){
+    public void init() {
+        final ProductInitializer productInitializer = new ProductInitializer();
+        final List<ProductRequest> productRequests = productInitializer.init();
+        for (ProductRequest productRequest : productRequests) {
             productService.create(productRequest);
         }
     }
@@ -64,7 +65,7 @@ public class OrderController {
             Long orderId = orderService.create(cartId);
             OrderResponse orderResponse = orderService.find(orderId);
             OutputView.printOrderInformation(orderResponse);
-        }catch(RuntimeException e){
+        } catch (RuntimeException e) {
             System.out.println(e.getMessage());
         }
         run();

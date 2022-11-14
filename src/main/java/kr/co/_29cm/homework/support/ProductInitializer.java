@@ -7,19 +7,25 @@ import kr.co._29cm.homework.dto.request.ProductRequest;
 
 public class ProductInitializer {
 
-    public static List<ProductRequest> init() {
-        final List<String[]> lines = CsvReader.read("items_homework.csv");
+    private final CsvReader csvReader;
+
+    public ProductInitializer() {
+        this.csvReader = new CsvReader();
+    }
+
+    public List<ProductRequest> init() {
+        final List<String[]> lines = csvReader.read("/items_homework.csv");
         lines.remove(0);
         return generateProducts(lines);
     }
 
-    private static List<ProductRequest> generateProducts(List<String[]> lines) {
+    private List<ProductRequest> generateProducts(List<String[]> lines) {
         return lines.stream()
-                .map(ProductInitializer::toProductRequest)
+                .map(this::toProductRequest)
                 .collect(Collectors.toList());
     }
 
-    private static ProductRequest toProductRequest(final String[] line) {
+    private ProductRequest toProductRequest(final String[] line) {
         final Long id = Long.parseLong(line[0]);
         final String name = String.join(",", Arrays.copyOfRange(line, 1, line.length - 2));
         final int price = Integer.parseInt(line[line.length - 2]);
