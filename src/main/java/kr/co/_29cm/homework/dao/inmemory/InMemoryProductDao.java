@@ -1,10 +1,12 @@
-package kr.co._29cm.homework.dao;
+package kr.co._29cm.homework.dao.inmemory;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
+import kr.co._29cm.homework.dao.ProductDao;
 import kr.co._29cm.homework.domain.Product;
 
 public class InMemoryProductDao implements ProductDao {
@@ -27,8 +29,8 @@ public class InMemoryProductDao implements ProductDao {
     }
 
     @Override
-    public Product findById(Long id) {
-        return IN_MEMORY_PRODUCTS.get(id);
+    public Optional<Product> findById(Long id) {
+        return Optional.ofNullable(IN_MEMORY_PRODUCTS.get(id));
     }
 
     @Override

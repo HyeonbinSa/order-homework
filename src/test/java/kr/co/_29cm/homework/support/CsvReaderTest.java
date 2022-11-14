@@ -9,14 +9,16 @@ import org.junit.jupiter.api.Test;
 
 public class CsvReaderTest {
 
+    private CsvReader csvReader = new CsvReader();
+
     @DisplayName("CSV 파일을 읽어 List 형태로 반환한다.")
     @Test
     void read() {
         // when
-        List<String[]> read = CsvReader.read("items.csv");
+        List<String[]> read = csvReader.read("/items.csv");
 
         // then
-        assertEquals(read.size(), 5);
+        assertEquals(read.size(), 6);
     }
 
     @DisplayName("파일명이 존재하지 않을 경우 예외를 반환한다.")
@@ -24,6 +26,6 @@ public class CsvReaderTest {
     void read_WhenNonExistFile() {
         // when & then
         assertThrows(IllegalArgumentException.class,
-                () -> CsvReader.read("item.csv"));
+                () -> csvReader.read("/item.csv"));
     }
 }

@@ -3,7 +3,7 @@ package kr.co._29cm.homework.view;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-import kr.co._29cm.homework.dto.CartRequest;
+import kr.co._29cm.homework.dto.request.CartRequest;
 
 public class InputView {
 
@@ -11,6 +11,15 @@ public class InputView {
     public static final String EMPTY = "";
 
     public static boolean inputStartCommand() {
+        try {
+            return inputCommand();
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return inputCommand();
+        }
+    }
+
+    private static boolean inputCommand() {
         System.out.print("입력(o[order]: 주문, q[quit]: 종료) : ");
         String command = SCANNER.nextLine();
         if (command.equals("o") || command.equals("order")) {

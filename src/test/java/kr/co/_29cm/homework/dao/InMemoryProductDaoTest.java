@@ -31,7 +31,7 @@ public class InMemoryProductDaoTest {
         productDao.save(파버카스텔_연필1자루);
 
         // when
-        Product product = productDao.findById(파버카스텔_연필1자루.getId());
+        Product product = productDao.findById(파버카스텔_연필1자루.getId()).get();
 
         // then
         assertAll(

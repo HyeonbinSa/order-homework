@@ -1,45 +1,73 @@
 package kr.co._29cm.homework.controller;
 
 import java.util.List;
-import kr.co._29cm.homework.dao.InMemoryProductDao;
-import kr.co._29cm.homework.domain.Product;
-import kr.co._29cm.homework.dto.CartRequest;
-import kr.co._29cm.homework.dto.OrderResponse;
+import kr.co._29cm.homework.dao.CartDao;
+import kr.co._29cm.homework.dao.CartItemDao;
+import kr.co._29cm.homework.dao.OrderDao;
+import kr.co._29cm.homework.dao.OrderProductDao;
+import kr.co._29cm.homework.dao.ProductDao;
+import kr.co._29cm.homework.dao.inmemory.InMemoryCartDao;
+import kr.co._29cm.homework.dao.inmemory.InMemoryCartItemDao;
+import kr.co._29cm.homework.dao.inmemory.InMemoryOrderDao;
+import kr.co._29cm.homework.dao.inmemory.InMemoryOrderProductDao;
+import kr.co._29cm.homework.dao.inmemory.InMemoryProductDao;
+import kr.co._29cm.homework.dto.request.CartRequest;
+import kr.co._29cm.homework.dto.request.ProductRequest;
+import kr.co._29cm.homework.dto.response.OrderResponse;
+import kr.co._29cm.homework.dto.response.ProductResponse;
 import kr.co._29cm.homework.service.CartService;
 import kr.co._29cm.homework.service.OrderService;
 import kr.co._29cm.homework.service.ProductService;
+import kr.co._29cm.homework.support.ProductInitializer;
 import kr.co._29cm.homework.view.InputView;
 import kr.co._29cm.homework.view.OutputView;
 
 public class OrderController {
 
-    final ProductService productService = new ProductService(new InMemoryProductDao());
-    final OrderService orderService = new OrderService();
-    final CartService cartService = new CartService();
+    private final ProductDao productDao;
+    private final OrderDao orderDao;
+    private final OrderProductDao orderProductDao;
+    private final CartItemDao cartItemDao;
+    private final CartDao cartDao;
+    private final ProductService productService;
+    private final CartService cartService;
+    private final OrderService orderService;
+
+    public OrderController() {
+        this.productDao = new InMemoryProductDao();
+        this.orderDao = new InMemoryOrderDao();
+        this.orderProductDao = new InMemoryOrderProductDao();
+        this.cartItemDao = new InMemoryCartItemDao();
+        this.cartDao = new InMemoryCartDao();
+        this.productService = new ProductService(productDao);
+        this.cartService = new CartService(cartDao, cartItemDao, productDao);
+        this.orderService = new OrderService(productDao, orderDao, orderProductDao, cartItemDao, cartDao);
+    }
+
+    public void init() {
+        final ProductInitializer productInitializer = new ProductInitializer();
+        final List<ProductRequest> productRequests = productInitializer.init();
+        for (ProductRequest productRequest : productRequests) {
+            productService.create(productRequest);
+        }
+    }
 
     public void run() {
-        if (!inputCommand()) {
+        if (!InputView.inputStartCommand()) {
             OutputView.printQuitMessage();
             return;
         }
-        productService.init();
-        List<Product> products = productService.findAll();
-        OutputView.printProducts(products);
-        CartRequest cartRequest = InputView.inputCartInformation();
-        Long cartId = cartService.create(cartRequest);
-        Long orderId = orderService.create(cartId);
-        OrderResponse orderResponse = orderService.find(orderId);
-        OutputView.printOrderInformation(orderResponse);
-        run();
-    }
-
-
-    private boolean inputCommand() {
         try {
-            return InputView.inputStartCommand();
-        } catch (IllegalArgumentException e) {
+            List<ProductResponse> products = productService.findAll();
+            OutputView.printProducts(products);
+            CartRequest cartRequest = InputView.inputCartInformation();
+            Long cartId = cartService.create(cartRequest);
+            Long orderId = orderService.create(cartId);
+            OrderResponse orderResponse = orderService.find(orderId);
+            OutputView.printOrderInformation(orderResponse);
+        } catch (RuntimeException e) {
             System.out.println(e.getMessage());
-            return inputCommand();
         }
+        run();
     }
 }

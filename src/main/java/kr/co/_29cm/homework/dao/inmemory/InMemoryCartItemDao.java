@@ -1,4 +1,4 @@
-package kr.co._29cm.homework.dao;
+package kr.co._29cm.homework.dao.inmemory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
+import kr.co._29cm.homework.dao.CartItemDao;
 import kr.co._29cm.homework.domain.CartItem;
 import kr.co._29cm.homework.domain.CartItems;
 
@@ -29,7 +30,7 @@ public class InMemoryCartItemDao implements CartItemDao {
     @Override
     public CartItems findByCartId(Long cartId) {
         return new CartItems(IN_MEMORY_CART_ITEM.values().stream()
-                .filter(cartItem -> cartItem.getId().equals(cartId))
+                .filter(cartItem -> cartItem.getCartId().equals(cartId))
                 .collect(Collectors.toList()));
     }
 

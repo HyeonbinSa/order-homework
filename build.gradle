@@ -2,6 +2,12 @@ plugins {
     id 'java'
 }
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'kr.co._29cm.homework.Application'
+    }
+}
+
 group 'co.kr._29cm'
 version '1.0-SNAPSHOT'
 

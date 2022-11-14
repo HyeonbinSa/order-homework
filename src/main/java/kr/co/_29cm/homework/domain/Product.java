@@ -1,5 +1,7 @@
 package kr.co._29cm.homework.domain;
 
+import kr.co._29cm.homework.exception.SoldOutException;
+
 public class Product {
 
     private static final String EMPTY_NAME = "";
@@ -36,6 +38,17 @@ public class Product {
     private void validateStock(int stock) {
         if (stock < MINIMUM_STOCK) {
             throw new IllegalArgumentException("상품 재고는 0보다 작을 수 없습니다.");
+        }
+    }
+
+    public void sell(int quantity) {
+        validateOrderStock(quantity);
+        this.stock -= quantity;
+    }
+
+    public void validateOrderStock(int quantity) {
+        if (stock < quantity) {
+            throw new SoldOutException();
         }
     }
 

@@ -1,6 +1,5 @@
 package kr.co._29cm.homework.dao;
 
-import java.util.List;
 import kr.co._29cm.homework.domain.CartItem;
 import kr.co._29cm.homework.domain.CartItems;
 

@@ -5,16 +5,13 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import kr.co._29cm.homework.dao.CartDao;
 import kr.co._29cm.homework.dao.CartItemDao;
-import kr.co._29cm.homework.dao.InMemoryCartDao;
-import kr.co._29cm.homework.dao.InMemoryCartItemDao;
-import kr.co._29cm.homework.dao.InMemoryProductDao;
 import kr.co._29cm.homework.dao.ProductDao;
 import kr.co._29cm.homework.domain.Cart;
 import kr.co._29cm.homework.domain.CartItem;
 import kr.co._29cm.homework.domain.CartItems;
 import kr.co._29cm.homework.domain.Product;
-import kr.co._29cm.homework.dto.CartRequest;
-import kr.co._29cm.homework.dto.CartResponse;
+import kr.co._29cm.homework.dto.request.CartRequest;
+import kr.co._29cm.homework.dto.response.CartResponse;
 
 public class CartService {
 
@@ -22,13 +19,16 @@ public class CartService {
     private final CartItemDao cartItemDao;
     private final ProductDao productDao;
 
-    public CartService() {
-        this.cartDao = new InMemoryCartDao();
-        this.cartItemDao = new InMemoryCartItemDao();
-        this.productDao = new InMemoryProductDao();
+    public CartService(final CartDao cartDao,
+                       final CartItemDao cartItemDao,
+                       final ProductDao productDao) {
+        this.cartDao = cartDao;
+        this.cartItemDao = cartItemDao;
+        this.productDao = productDao;
     }
 
     public Long create(CartRequest cartRequest) {
+        validateEmptyCart(cartRequest);
         Long createdCartId = cartDao.save();
         List<CartItem> cartItems = cartRequest.getCartRequests().entrySet().stream()
                 .map(entry -> generateCartItem(entry, createdCartId))
@@ -40,13 +40,21 @@ public class CartService {
     }
 
     public CartResponse findByCartId(Long cartId) {
-        Cart cart = cartDao.findById(cartId);
+        Cart cart = cartDao.findById(cartId)
+                .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 장바구니입니다."));
         CartItems cartItems = cartItemDao.findByCartId(cart.getId());
         return CartResponse.of(cart, cartItems.getValue());
     }
 
     private CartItem generateCartItem(Entry<Long, Integer> orderRequest, Long cartId) {
-        Product product = productDao.findById(orderRequest.getKey());
+        Product product = productDao.findById(orderRequest.getKey())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
         return new CartItem(cartId, product.getId(), product.getName(), product.getPrice(), orderRequest.getValue());
+    }
+
+    private void validateEmptyCart(CartRequest cartRequest) {
+        if (cartRequest.getCartRequests().size() == 0) {
+            throw new IllegalArgumentException("장바구니가 비어있습니다.");
+        }
     }
 }

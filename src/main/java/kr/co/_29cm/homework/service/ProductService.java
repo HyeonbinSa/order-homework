@@ -1,10 +1,12 @@
 package kr.co._29cm.homework.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import kr.co._29cm.homework.dao.ProductDao;
 import kr.co._29cm.homework.domain.Product;
-import kr.co._29cm.homework.support.CsvReader;
+import kr.co._29cm.homework.dto.request.ProductRequest;
+import kr.co._29cm.homework.dto.response.ProductResponse;
 
 public class ProductService {
 
@@ -14,36 +16,21 @@ public class ProductService {
         this.productDao = productDao;
     }
 
-    public void init() {
-        final List<String[]> lines = CsvReader.read("items.csv");
-        final List<Product> products = generateProducts(lines);
-        for (Product product : products) {
-            productDao.save(product);
+    public Long create(final ProductRequest productRequest) {
+        return productDao.save(productRequest.toProduct());
+    }
+
+    public ProductResponse findById(final Long id) {
+        final Optional<Product> product = productDao.findById(id);
+        if(product.isEmpty()){
+            throw new IllegalArgumentException("존재하지 않는 상품입니다.");
         }
+        return ProductResponse.from(product.get());
     }
 
-    public Long create(final Product product) {
-        return productDao.save(product);
-    }
-
-    public Product findById(Long id) {
-        return productDao.findById(id);
-    }
-
-    public List<Product> findAll() {
-        return productDao.findAll();
-    }
-
-    private List<Product> generateProducts(List<String[]> lines) {
-        return lines.stream().map(this::toProduct)
+    public List<ProductResponse> findAll() {
+        return productDao.findAll().stream()
+                .map(ProductResponse::from)
                 .collect(Collectors.toList());
-    }
-
-    private Product toProduct(final String[] line) {
-        final Long id = Long.parseLong(line[0]);
-        final String name = line[1];
-        final int price = Integer.parseInt(line[2]);
-        final int stock = Integer.parseInt(line[3]);
-        return new Product(id, name, price, stock);
     }
 }
